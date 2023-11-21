@@ -24,10 +24,13 @@ def save_to_markdown(problem_number, output):
 # Main loop to process a range of problem numbers
 def main():
     assistant_id = os.getenv("PYVERSE_ASSISTANT_ID")
-    if not assistant_id:
-        raise ValueError("PYVERSE_ASSISTANT_ID not found in environment variables")
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not assistant_id or not api_key:
+        raise ValueError(
+            "Environment variables PYVERSE_ASSISTANT_ID or OPENAI_API_KEY not found"
+        )
 
-    client = OpenAIClient(assistant_id)
+    client = OpenAIClient(assistant_id, api_key)
     processor = LeetCodeProcessor(client)
 
     start_problem_number = 1  # Start number

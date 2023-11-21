@@ -4,8 +4,8 @@ import time
 
 
 class OpenAIClient:
-    def __init__(self, assistant_id):
-        self.client = OpenAI()
+    def __init__(self, assistant_id, api_key):
+        self.client = OpenAI(api_key=api_key)
         self.assistant_id = assistant_id
 
     def submit_message(self, thread, user_message):
