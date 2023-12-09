@@ -33,15 +33,29 @@ def main():
     results = {}
 
     for problem_number in range(start_problem_number, end_problem_number + 1):
-        problem_number, output = processor.process_problem(problem_number)
-        results[problem_number] = output
-        print(f"Problem {problem_number}: {output}")
+        try:
+            # Added debug print statement
+            print(f"Processing problem {problem_number}...")
+            problem_number, output = processor.process_problem(problem_number)
 
-        # Save the output to a Markdown file
-        if output is not None:
-            save_to_markdown(problem_number, output)
+            # Additional check to see if output is as expected
+            if not output:
+                print(f"No output for problem {problem_number}")
+                continue
 
-    time.sleep(0.3)
+            results[problem_number] = output
+            print(f"Problem {problem_number}: {output}")
+
+            # Save the output to a Markdown file
+            if output is not None:
+                save_to_markdown(problem_number, output)
+
+        except Exception as e:
+            logging.error(f"Error processing problem {problem_number}: {e}")
+            continue
+
+        time.sleep(0.3)
+
     # Results contain all the responses indexed by problem numbers
     return results
 
@@ -50,7 +64,11 @@ def main():
 if __name__ == "__main__":
     results = main()
 
-    # Convert results to a Pandas DataFrame and save to CSV
-    df = pd.DataFrame(list(results.items()), columns=["Problem Number", "Output"])
-    df.to_csv("results.csv", index=False)
-    logging.info("Saved results to CSV using Pandas")
+    # Check if there are results before proceeding to save them
+    if results:
+        # Convert results to a Pandas DataFrame and save to CSV
+        df = pd.DataFrame(list(results.items()), columns=["Problem Number", "Output"])
+        df.to_csv("results.csv", index=False)
+        logging.info("Saved results to CSV using Pandas")
+    else:
+        logging.info("No results to save to CSV.")
