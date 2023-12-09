@@ -1,8 +1,11 @@
 import logging
 import os
+import time
+import pandas as pd  # Import Pandas
 from dotenv import load_dotenv
 from openai_client import OpenAIClient
 from leetcode_processor import LeetCodeProcessor
+from utils.save_to_markdown import save_to_markdown
 
 # Load environment variables from .env file
 load_dotenv()
@@ -11,14 +14,6 @@ load_dotenv()
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
-
-
-# Function to save the output to a Markdown file
-def save_to_markdown(problem_number, output):
-    filename = f"problem_{problem_number}.md"
-    with open(filename, "w") as file:
-        file.write(output)
-    logging.info(f"Saved output of problem {problem_number} to {filename}")
 
 
 # Main loop to process a range of problem numbers
@@ -34,7 +29,7 @@ def main():
     processor = LeetCodeProcessor(client)
 
     start_problem_number = 1  # Start number
-    end_problem_number = 5  # End number
+    end_problem_number = 2  # End number
     results = {}
 
     for problem_number in range(start_problem_number, end_problem_number + 1):
@@ -46,6 +41,7 @@ def main():
         if output is not None:
             save_to_markdown(problem_number, output)
 
+    time.sleep(0.3)
     # Results contain all the responses indexed by problem numbers
     return results
 
@@ -53,3 +49,8 @@ def main():
 # Run the main loop
 if __name__ == "__main__":
     results = main()
+
+    # Convert results to a Pandas DataFrame and save to CSV
+    df = pd.DataFrame(list(results.items()), columns=["Problem Number", "Output"])
+    df.to_csv("results.csv", index=False)
+    logging.info("Saved results to CSV using Pandas")
