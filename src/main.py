@@ -29,7 +29,7 @@ def main():
     processor = LeetCodeProcessor(client)
 
     start_problem_number = 1  # Start number
-    end_problem_number = 2  # End number
+    end_problem_number = 100  # End number
     results = {}
 
     for problem_number in range(start_problem_number, end_problem_number + 1):
@@ -41,7 +41,7 @@ def main():
         if output is not None:
             save_to_markdown(problem_number, output)
 
-    time.sleep(0.3)
+    time.sleep(5)
     # Results contain all the responses indexed by problem numbers
     return results
 
