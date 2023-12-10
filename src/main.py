@@ -28,8 +28,8 @@ def main():
     client = OpenAIClient(assistant_id, api_key)
     processor = LeetCodeProcessor(client)
 
-    start_problem_number = 1  # Start number
-    end_problem_number = 100  # End number
+    start_problem_number = 101  # Start number
+    end_problem_number = 201  # End number
     results = {}
 
     for problem_number in range(start_problem_number, end_problem_number + 1):
