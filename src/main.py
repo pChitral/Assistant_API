@@ -29,7 +29,7 @@ def main():
     processor = LeetCodeProcessor(client)
 
     start_problem_number = 101  # Start number
-    end_problem_number = 201  # End number
+    end_problem_number = 501  # End number
     results = {}
 
     for problem_number in range(start_problem_number, end_problem_number + 1):
